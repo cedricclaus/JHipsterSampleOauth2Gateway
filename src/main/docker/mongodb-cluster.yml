@@ -1,0 +1,16 @@
+version: '2'
+services:
+    jhipstersampleoauth2gateway-mongodb:
+        image: mongo:4.0.2
+        ports:
+            - "27017:27017"
+        command: mongos --configdb jhipstersampleoauth2gateway-mongodb-config
+    jhipstersampleoauth2gateway-mongodb-node:
+        build:
+            context: .
+            dockerfile: mongodb/MongoDB.Dockerfile
+        command: mongod --replSet rs1 --noprealloc --smallfiles
+    jhipstersampleoauth2gateway-mongodb-config:
+        image: mongo:4.0.2
+        container_name: jhipstersampleoauth2gateway-mongodb-config
+        command: mongod --noprealloc --smallfiles --configsvr --dbpath /data/db
